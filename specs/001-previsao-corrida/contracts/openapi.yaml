@@ -1,0 +1,102 @@
+openapi: 3.1.0
+info:
+  title: DESLOC — API de estimativa de corrida
+  version: 1.0.0
+  description: |
+    Backend do simulador DESLOC. Recebe origem, destino e (opcionalmente) a data/hora
+    da solicitação, consulta o endpoint de Model Serving do Databricks via REST
+    (`/serving-endpoints/{nome}/invocations`) e devolve o preço e a duração estimados.
+servers:
+  - url: http://localhost:8000
+paths:
+  /api/health:
+    get:
+      summary: Situação da API e da configuração de inferência
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /api/v1/estimativa:
+    post:
+      summary: Estima preço e duração de uma corrida
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EstimativaRequest"
+            example:
+              origem: { lat: -23.5614, lon: -46.6559 }
+              destino: { lat: -23.5874, lon: -46.6576 }
+              datahora_solicitacao: "2026-11-03T08:15:00-03:00"
+      responses:
+        "200":
+          description: Estimativa calculada pelo modelo servido no Databricks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstimativaResponse"
+        "422":
+          description: Entrada inválida (coordenadas fora da faixa, origem igual ao destino, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+        "503":
+          description: Serviço de inferência indisponível ou iniciando (scale-to-zero)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Erro"
+components:
+  schemas:
+    Ponto:
+      type: object
+      required: [lat, lon]
+      properties:
+        lat: { type: number, minimum: -90, maximum: 90 }
+        lon: { type: number, minimum: -180, maximum: 180 }
+    EstimativaRequest:
+      type: object
+      required: [origem, destino]
+      properties:
+        origem: { $ref: "#/components/schemas/Ponto" }
+        destino: { $ref: "#/components/schemas/Ponto" }
+        datahora_solicitacao:
+          type: string
+          format: date-time
+          description: Padrão = agora, fuso America/Sao_Paulo
+    EstimativaResponse:
+      type: object
+      required: [valor_previsto, duracao_estimada_min, distancia_km, moeda, modelo]
+      properties:
+        valor_previsto: { type: number, description: "Preço estimado em R$" }
+        duracao_estimada_min: { type: number, description: "Duração estimada em minutos" }
+        distancia_km: { type: number, description: "Distância haversine origem→destino" }
+        moeda: { type: string, example: BRL }
+        modelo:
+          type: object
+          properties:
+            endpoint: { type: string, example: desloc-corrida }
+            versao: { type: string, nullable: true }
+        datahora_solicitacao: { type: string, format: date-time }
+    Health:
+      type: object
+      properties:
+        status: { type: string, enum: [ok, misconfigured] }
+        endpoint: { type: string }
+        inferencia_configurada: { type: boolean }
+    Erro:
+      type: object
+      properties:
+        detail: { type: string }
+
+# Contrato do Model Serving (Databricks) — POST /serving-endpoints/desloc-corrida/invocations
+# Request:  {"dataframe_records": [{"latitude_origem": -23.56, "longitude_origem": -46.65,
+#            "latitude_destino": -23.58, "longitude_destino": -46.65,
+#            "datahora_solicitacao": "2026-11-03 08:15:00"}]}
+# Response: {"predictions": [{"valor_previsto": 23.1, "duracao_estimada_min": 11.2,
+#            "distancia_km": 2.9}]}
