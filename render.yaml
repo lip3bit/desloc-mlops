@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: desloc-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABRICKS_HOST
+        value: https://dbc-097964b0-0fea.cloud.databricks.com
+      - key: DATABRICKS_ENDPOINT
+        value: desloc-corrida
+      - key: DATABRICKS_TOKEN
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
