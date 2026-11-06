@@ -233,6 +233,15 @@ input {
   color: var(--cor-texto-suave);
 }
 
+.painel__link-api {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 @media (min-width: 900px) {
   .painel {
     top: 16px;

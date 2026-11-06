@@ -10,6 +10,9 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
       },
+      // Swagger do backend acessível pelo mesmo endereço do app
+      '/docs': 'http://localhost:8000',
+      '/openapi.json': 'http://localhost:8000',
     },
   },
   preview: {

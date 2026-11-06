@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { API_BASE } from './api/client';
 import { AndamentoEstimativa } from './components/AndamentoEstimativa';
 import { CampoEndereco } from './components/CampoEndereco';
 import { CartaoResultado } from './components/CartaoResultado';
@@ -354,6 +355,15 @@ export default function App() {
           <footer className="painel__rodape">
             Projeto acadêmico de MLOps. Preço e duração previstos por modelo servido no Databricks; trajeto
             ilustrativo via OSRM; endereços via Nominatim/OpenStreetMap.
+            <a
+              className="painel__link-api"
+              href={`${API_BASE}/docs`}
+              target="_blank"
+              rel="noreferrer"
+              data-testid="link-swagger"
+            >
+              Documentação da API (Swagger) ↗
+            </a>
           </footer>
         </div>
       </aside>
