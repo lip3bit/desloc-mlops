@@ -9,8 +9,15 @@ Simulador de mobilidade em que o passageiro escolhe origem e destino em São Pau
 |---|---|
 | **App (deploy)** | _a publicar_ |
 | **API (deploy)** | _a publicar_ |
-| **Vídeo da demonstração local** | [assets/demo-aplicacao.mp4](assets/demo-aplicacao.mp4) |
+| **Vídeo da demonstração local (MP4, 1min24s)** | [Assistir / baixar](https://raw.githubusercontent.com/lip3bit/desloc-mlops/main/assets/demo-aplicacao.mp4) |
+| **Documentação da API (Swagger)** | `http://localhost:8000/docs` (ou pelo link no rodapé do app) |
 | **Especificação (spec-kit)** | [specs/001-previsao-corrida](specs/001-previsao-corrida/spec.md) |
+
+### Demonstração
+
+![Demonstração do app DESLOC: cotação de corridas e backend executando no Swagger](assets/demo-aplicacao.gif)
+
+*Prévia acelerada (3×). O vídeo completo mostra três corridas cotadas pelo app (busca de endereço e cliques no mapa) e, em seguida, o backend funcionando no **Swagger**: `GET /api/health` e `POST /api/v1/estimativa` executados com "Try it out", retornando o preço e a duração previstos pelo modelo `desloc-corrida` do Databricks.*
 
 ---
 
@@ -59,7 +66,7 @@ Simulador de mobilidade em que o passageiro escolhe origem e destino em São Pau
 |---|---|
 | [`notebooks/`](notebooks) | Pipeline Databricks: ingestão, medalhão, EDA, preparação, KNN das aulas, deploy e avaliação (01–08), features (00), duração (09), hipótese (10), preço v2 + Serving (11) |
 | [`scripts/`](scripts) | `serving_endpoint.py`: Model Serving via API REST |
-| [`backend/`](backend) | FastAPI: validação, chamada REST ao Serving com retry para *cold start*, log de previsões, Swagger, testes |
+| [`backend/`](backend) | FastAPI: validação, chamada REST ao Serving com retry para *cold start*, log de previsões, Swagger interativo em `/docs`, testes |
 | [`frontend/`](frontend) | React + Vite + Leaflet: busca de endereços, clique no mapa, rota, cartão de preço/tempo |
 | [`specs/`](specs/001-previsao-corrida) + [`.specify/`](.specify/memory/constitution.md) | Constituição, spec, plano, pesquisa, modelo de dados, contrato, quickstart e tarefas |
 | [`data/`](data) | Base bruta (104 corridas em São Paulo) |
