@@ -1,6 +1,6 @@
 # DESLOC — Previsão de preço e duração de corridas (MLOps)
 
-**Instituição:** Faculdade ESUDA · **Pós-graduação:** Engenharia de Software · **Disciplina:** MLOps
+**Instituição:** Faculdade ESUDA · **Pós-graduação:** Engenharia de Software · **Disciplina:** MLOps<br>
 **Autor:** Luis Felipe Nunes
 
 Simulador de mobilidade em que o passageiro escolhe origem e destino em São Paulo e recebe o **valor** e o **tempo** estimados da corrida, previstos por modelos treinados e servidos no **Databricks** (Unity Catalog + MLflow + Model Serving).
