@@ -26,7 +26,7 @@
 - [X] 2. Aplicativo web estilo Uber: origem/destino → valor previsto pelo modelo (`frontend/` + `backend/`)
 - [X] 3. Código-fonte versionado no Git, com backend e frontend
 - [X] 3. Vídeo da aplicação funcionando localmente (`assets/demo-aplicacao.mp4`)
-- [ ] 3. URL pública do deploy (depende de login no Render/Vercel e do secret do autor)
+- [X] 3. URL do deploy **ou** vídeo: atendido pelo vídeo local. O deploy público (Render + Vercel) ficou opcional e não foi publicado
 - [X] Serving do Databricks gerado via API REST (`scripts/serving_endpoint.py`)
 
 ## Notes

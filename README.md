@@ -7,9 +7,8 @@ Simulador de mobilidade em que o passageiro escolhe origem e destino em São Pau
 
 | | |
 |---|---|
-| **App (deploy)** | _a publicar_ |
-| **API (deploy)** | _a publicar_ |
-| **Vídeo da demonstração local (MP4, 1min24s)** | [Assistir / baixar](https://raw.githubusercontent.com/lip3bit/desloc-mlops/main/assets/demo-aplicacao.mp4) |
+| **Vídeo da demonstração local (MP4, 1min24s)** | [Assistir / baixar](https://raw.githubusercontent.com/lip3bit/desloc-mlops/main/assets/demo-aplicacao.mp4) · prévia animada logo abaixo |
+| **Deploy público** | Não publicado: o enunciado aceita o vídeo da demonstração local. A configuração está pronta em [`render.yaml`](render.yaml) (backend) e [`frontend/vercel.json`](frontend/vercel.json) |
 | **Documentação da API (Swagger)** | `http://localhost:8000/docs` (ou pelo link no rodapé do app) |
 | **Especificação (spec-kit)** | [specs/001-previsao-corrida](specs/001-previsao-corrida/spec.md) |
 
@@ -29,12 +28,12 @@ Simulador de mobilidade em que o passageiro escolhe origem e destino em São Pau
 | **1a.** Usar a saída como feature do modelo de preço | [`11_modelo_preco_deploy`](notebooks/11_modelo_preco_deploy.ipynb): `duracao_estimada` entra no preço; MAE **R$ 0,62** (KNN da aula: R$ 1,82) |
 | **1b.** Validar a hipótese "quanto mais demorada, mais lucramos" | [`10_validacao_hipotese`](notebooks/10_validacao_hipotese.ipynb): **confirmada para receita** (r = 0,50, p < 0,001; +R$ 0,07/min mesmo controlando a distância). A receita por minuto **cai** nas corridas longas, e **lucro não é validável** sem custos |
 | **2.** App web estilo Uber: origem/destino → valor previsto pelo modelo | [`frontend/`](frontend) (React + Leaflet) + [`backend/`](backend) (FastAPI) consumindo o Model Serving |
-| **3.** Código versionado no Git + URL do deploy ou vídeo | Este repositório (notebooks, backend, frontend, infra e docs), vídeo em `assets/` e deploy Render + Vercel |
+| **3.** Código versionado no Git + URL do deploy ou vídeo | Este repositório (notebooks com as saídas da execução no Databricks, backend, frontend, infra e docs) e o vídeo do app rodando localmente e prevendo, em [`assets/demo-aplicacao.mp4`](assets/demo-aplicacao.mp4) |
 | Serving do Databricks via API | [`scripts/serving_endpoint.py`](scripts/serving_endpoint.py): `POST /api/2.0/serving-endpoints`, `PUT .../config`, `POST /serving-endpoints/desloc-corrida/invocations` |
 
 ### Features e adicionais do projeto
 
-- Notebooks do Databricks **versionados no Git** (01–08 das aulas + 00, 09, 10, 11).
+- Notebooks do Databricks **versionados no Git com as saídas da execução** (01–08 das aulas + 00, 09, 10, 11): tabelas, métricas e gráficos aparecem direto no GitHub.
 - **Correção do vazamento temporal**: o calendário usa o horário da solicitação (proxy `entrega − duração`), não o da entrega.
 - **Modelo encadeado** (`mlflow.pyfunc`) duração → preço, servido por **Model Serving criado via API REST**, em vez de função SQL.
 - **Testes automatizados**, **CI** (GitHub Actions), **Docker Compose** e **log de previsões** para monitoramento.
@@ -128,6 +127,7 @@ Testes: `cd backend && pytest -q` · `cd frontend && npm run build`.
 - O horário da solicitação é um **proxy** (`entrega − duração`); o tempo de espera do motorista é desconhecido.
 - `vlr_pago` é **receita bruta**; conclusões sobre lucro exigem dados de custo.
 - O endpoint usa *scale-to-zero* (Free Edition): a primeira chamada após inatividade pode levar alguns minutos.
+- A Free Edition limita o uso de computação e pode suspender o workspace temporariamente, removendo os endpoints de serving e bloqueando novos até a liberação. Nesse caso a API responde que o endpoint de inferência não foi encontrado. Para republicar quando o workspace for liberado: `python scripts/serving_endpoint.py deploy` (o modelo continua registrado no Unity Catalog).
 
 ## 6. Tecnologias
 

@@ -58,7 +58,7 @@
 - [X] T025 [P] Documentação spec-kit (`spec.md`, `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, checklist)
 - [X] T026 README com atendimento ao enunciado, arquitetura, resultados e links
 - [X] T027 Publicar o repositório no GitHub
-- [ ] T028 Deploy público: backend no Render e frontend no Vercel (depende de login e secrets do autor)
+- [ ] T028 (Opcional) Deploy público no Render + Vercel. Não executado: a entrega usa o vídeo da demonstração local, opção aceita pelo enunciado. A configuração está em `render.yaml` e `frontend/vercel.json`
 
 ## Dependencies & Execution Order
 
